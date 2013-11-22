@@ -1,5 +1,4 @@
 // Author: Leonardo
- 
 #ifndef AD9834_H_
 #define AD9834_H_
 
