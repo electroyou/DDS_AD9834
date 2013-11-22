@@ -46,7 +46,7 @@
 
 #include "compiler.h"
 
-#warning You must refill the following definitions with a correct values
+#warning change VID/PID (now ATMEL_CDC_ASF_EXAMPLE)
 
 /**
  * USB Device Configuration
@@ -54,20 +54,18 @@
  */
 
 //! Device definition (mandatory)
-#define  USB_DEVICE_VENDOR_ID             USB_VID_ATMEL
-#define  USB_DEVICE_PRODUCT_ID            USB_PID_ATMEL_ASF_CDC
+#define  USB_DEVICE_VENDOR_ID             USB_VID_ATMEL				// USB_VID_ATMEL = 0x03EB
+#define  USB_DEVICE_PRODUCT_ID            USB_PID_ATMEL_ASF_CDC		// USB_PID_ATMEL_ASF_CDC = 0x2404
 #define  USB_DEVICE_MAJOR_VERSION         1
 #define  USB_DEVICE_MINOR_VERSION         0
-#define  USB_DEVICE_POWER                 100 // Consumption on Vbus line (mA)
-#define  USB_DEVICE_ATTR                  \
-	(USB_CONFIG_ATTR_SELF_POWERED)
-// (USB_CONFIG_ATTR_BUS_POWERED)
+#define  USB_DEVICE_POWER                 500 // Consumption on Vbus line (mA)
+#define  USB_DEVICE_ATTR                  USB_CONFIG_ATTR_BUS_POWERED
 //	(USB_CONFIG_ATTR_REMOTE_WAKEUP|USB_CONFIG_ATTR_SELF_POWERED)
 //	(USB_CONFIG_ATTR_REMOTE_WAKEUP|USB_CONFIG_ATTR_BUS_POWERED)
 
 //! USB Device string definitions (Optional)
 // #define  USB_DEVICE_MANUFACTURE_NAME      "Manufacture name"
-// #define  USB_DEVICE_PRODUCT_NAME          "Product name"
+#define  USB_DEVICE_PRODUCT_NAME          "DDS Function Generator"
 // #define  USB_DEVICE_SERIAL_NAME           "12...EF"
 
 
@@ -87,13 +85,10 @@
  * USB Device Callbacks definitions (Optional)
  * @{
  */
-// #define  UDC_VBUS_EVENT(b_vbus_high)      user_callback_vbus_action(b_vbus_high)
-// extern void user_callback_vbus_action(bool b_vbus_high);
-// #define  UDC_SOF_EVENT()                  user_callback_sof_action()
-// extern void user_callback_sof_action(void);
-// #define  UDC_SUSPEND_EVENT()              user_callback_suspend_action()
-// extern void user_callback_suspend_action(void);
-// #define  UDC_RESUME_EVENT()               user_callback_resume_action()
+#define  UDC_VBUS_EVENT(b_vbus_high)      stdio_usb_vbus_event(b_vbus_high)
+#define  UDC_SOF_EVENT()                  
+#define  UDC_SUSPEND_EVENT()              
+#define  UDC_RESUME_EVENT()               
 // extern void user_callback_resume_action(void);
 // Mandatory when USB_DEVICE_ATTR authorizes remote wakeup feature
 // #define  UDC_REMOTEWAKEUP_ENABLE()        user_callback_remotewakeup_enable()
@@ -121,8 +116,8 @@
 #define  UDI_CDC_PORT_NB 1
 
 //! Interface callback definition
-#define  UDI_CDC_ENABLE_EXT(port)          true
-#define  UDI_CDC_DISABLE_EXT(port)
+#define  UDI_CDC_ENABLE_EXT(port)			stdio_usb_enable()
+#define  UDI_CDC_DISABLE_EXT(port)			stdio_usb_disable()
 #define  UDI_CDC_RX_NOTIFY(port)
 #define  UDI_CDC_TX_EMPTY_NOTIFY(port)
 #define  UDI_CDC_SET_CODING_EXT(port,cfg)
@@ -166,5 +161,5 @@
 
 //! The includes of classes and other headers must be done at the end of this file to avoid compile error
 #include "udi_cdc_conf.h"
-
+#include <stdio_usb.h>
 #endif // _CONF_USB_H_

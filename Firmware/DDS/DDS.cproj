@@ -347,6 +347,12 @@
     <Compile Include="src\ASF\common\boards\user_board\user_board.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\usb_data.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\usb_data.h">
+      <SubType>compile</SubType>
+    </Compile>
     <None Include="atmel_devices_cdc.cat">
       <SubType>compile</SubType>
     </None>
