@@ -31,7 +31,7 @@
 // PB3 DAC1
 #define CONF_AD9834_DAC				DACB			// FS_ADJ port B
 #define CONF_AD9834_DAC_CHANNEL		DAC_CH0			// FS_ADJ pin PB2
-#define CONF_AD9834_DAC_REF			DAC_REF_AREFB	// PB0 - External reference on AREF pin on port B
+#define CONF_AD9834_DAC_REF			DAC_REF_AREFB	// PB0 - External reference on AREF pin on port B connected to 1.2v Ref Out of DDS
 #define CONF_AD9834_MAX_VOUT		0.6				// Voltage Output after amplification (0.6v with no amplification)
 
 #endif

@@ -27,7 +27,7 @@ void ad9834_write_register(uint16_t data)
 // Change the frequency and select AD9833 on-board register
 // selectReg = register 0 or 1, triangMode = 0 sine, 1 triangle
 // uses 14 bit filter and adds control words
-void ad9834_configure(uint32_t frequency, uint8_t selectReg, Bool triangMode, Bool squareMode)
+void ad9834_configure(float frequency, uint8_t selectReg, Bool triangMode, Bool squareMode)
 {
 	// take base10 frequency and do frequency hop
 	// 2^28 = 268435456
@@ -62,22 +62,8 @@ void ad9834_set_output_voltage(float vout)
 {
 	// Check if required vout is in admissible range
 	Assert((vout < 0) || (vout > CONF_AD9834_MAX_VOUT));
-	
-	// Assuming RSET=6.8K, VREF=1.2V math behind:
-	// i=18*(1.2-VDAC)/6.8k from datasheet so VDAC=(3400/9)*i+6/5
-	// max i = 0.003, max VOUT = MAX_VOUT
-	// MAX_VOUT:0.003 = VOUT:i => VOUT*0.003/MAX_VOUT=i
-	
-	// Calculate output current from DDS
-	float i = vout * 0.003 / CONF_AD9834_MAX_VOUT;
-	
-	// calculate VDAC to obtain current
-	float vdac = (3400/9)*i+(6/5);
-	
-	// Convert VDAC into 12bit DAC code
-	// MAX_VOUT : 2^12 = VDAC : DAC_VALUE
-	uint16_t dac_value = vdac * 4096 / CONF_AD9834_MAX_VOUT;
-	
+				
+	uint16_t dac_value = 4095 - (4095 * vout / CONF_AD9834_MAX_VOUT);	
 	dac_wait_for_channel_ready(&CONF_AD9834_DAC, CONF_AD9834_DAC_CHANNEL);
 	dac_set_channel_value(&CONF_AD9834_DAC, CONF_AD9834_DAC_CHANNEL, dac_value);
 }
@@ -86,11 +72,10 @@ void dac_init(void)
 {
 	struct dac_config conf;
 	dac_read_configuration(&CONF_AD9834_DAC, &conf);
-	dac_set_conversion_parameters(&conf, CONF_AD9834_DAC_REF, DAC_ADJ_LEFT);
-	dac_set_active_channel(&conf, CONF_AD9834_DAC_CHANNEL, 0);					// TODO: Check if is initial value
-	//dac_set_conversion_trigger(&conf, CONF_AD9834_DAC_CHANNEL, 3);
+	dac_set_conversion_parameters(&conf, CONF_AD9834_DAC_REF, DAC_ADJ_RIGHT);
+	dac_set_active_channel(&conf, CONF_AD9834_DAC_CHANNEL, 0);	
 	#ifdef XMEGA_DAC_VERSION_1
-	dac_set_conversion_interval(&conf, 1); // 1uS between conversion
+		dac_set_conversion_interval(&conf, 1); // 1uS between conversion
 	#endif
 	dac_write_configuration(&CONF_AD9834_DAC, &conf);
 	dac_enable(&CONF_AD9834_DAC);
@@ -127,5 +112,5 @@ void spi_init(void)
 void ad9834_init(void)
 {
 	spi_init();
-	//dac_init();
+	dac_init();
 }

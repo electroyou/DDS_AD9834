@@ -1,6 +1,18 @@
 // Author: Leonardo
 #include "usb_data.h"
 
+float usb_data_read_float(void){
+	Byte data[4];
+	data[0] = usb_data_read_byte();
+	data[1] = usb_data_read_byte();
+	data[2] = usb_data_read_byte();
+	data[3] = usb_data_read_byte();
+	return *((float*)data);
+}
+uint32_t usb_data_read_uint32(void){	
+	// TODO: Test
+	return usb_data_read_uint16() | (usb_data_read_uint16() << 16);
+}
 uint16_t usb_data_read_uint16(void){
 	Byte data[2];
 	data[0] = usb_data_read_byte();
