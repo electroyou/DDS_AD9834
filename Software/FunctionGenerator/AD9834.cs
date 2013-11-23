@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using System.IO.Ports;
+using System.Windows;
 
 namespace FunctionGenerator
 {
@@ -43,11 +44,11 @@ namespace FunctionGenerator
     {
       while (_isExecutingCmd) { Thread.Sleep(1); }
     }
-    public void SetFrequency(UInt32 frequency)
+    public void SetFrequency(float frequency)
     {
       _isExecutingCmd = true;
       _serial.WriteByte(CMD_FREQ);
-      _serial.WriteUInt32(frequency);
+      _serial.WriteFloat(frequency);
       _isExecutingCmd = false;
     }
     public void SetPhase(UInt32 phase)
@@ -62,13 +63,17 @@ namespace FunctionGenerator
       _isExecutingCmd = true;
       _serial.WriteByte(CMD_VOUT);
       _serial.WriteFloat(vout);
+
+      string s;
+      s= _serial.ReadLine();
+      MessageBox.Show(s);
       _isExecutingCmd = false;
     }
     public void SetWaveform(WaveForm waveform)
     {
       _isExecutingCmd = true;
       _serial.WriteByte(CMD_WAVEFORM);
-      _serial.WriteByte((byte)waveform);
+      _serial.WriteByte((byte)waveform);      
       _isExecutingCmd = false;
     }
   }
