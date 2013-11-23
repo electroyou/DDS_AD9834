@@ -7,6 +7,11 @@ Firmware project:
 - Atmel Studio 6.1 update 2
 - ASF 3.11.0
 
+Dev-Board for preliminar firmware development:
+
+EWS ATXmega32A4U Breakout Board
+http://embeddedwirelesssolutions.com/atmel_breakout_boards/ews_atxmega32a4u_breakout_board
+
 External documentation:
 
 Atmel ASF and Atmel Studio
