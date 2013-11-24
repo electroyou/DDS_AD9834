@@ -16,6 +16,12 @@ Dev-Board for preliminar firmware development:
 EWS ATXmega32A4U Breakout Board
 http://embeddedwirelesssolutions.com/atmel_breakout_boards/ews_atxmega32a4u_breakout_board
 
+Simulation:
+
+- TINA TI
+
+http://www.ti.com/tool/tina-ti
+
 External documentation:
 
 Atmel ASF and Atmel Studio
