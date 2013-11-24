@@ -20,10 +20,10 @@ namespace FunctionGenerator
         CultureInfo enUS = new CultureInfo("en-US");
         dds.Connect();
         dds.SetFrequency(float.Parse(txtFreq.Text, enUS));        
-        dds.SetAmplitude(float.Parse(txtVout.Text, enUS));
+        dds.SetAmplitude(float.Parse(txtVout.Text, enUS));        
+        dds.SetWaveform((AD9834.WaveForm)cbWaveform.SelectedIndex);
         // Not yet implemented on MCU
         //dds.SetPhase(UInt16.Parse(txtPhase.Text, enUS));
-        //dds.SetWaveform((AD9834.WaveForm)cbWaveform.SelectedIndex);
         dds.Disconnect();
       }
       catch (Exception ex)
