@@ -8,11 +8,11 @@
 
 // MCU Commands received from PC
 #define CMD_FREQ		0
-//#define CMD_FREQ_REG	1
+#define CMD_FREQ_REG	1
 //#define CMD_PHASE		2
 //#define CMD_PHASE_REG	3
 #define CMD_VOUT		4
-//#define CMD_WAVEFORM	5
+#define CMD_WAVEFORM	5
 //#define CMD_SWEEP		6
 //#define CMD_SLEEP		254
 //#define CMD_RESET		255
@@ -35,12 +35,12 @@ int main(void)
 	ioport_set_pin_level(GPIO_LED_GREEN, IOPORT_PIN_LEVEL_HIGH);		
 	
 	ad9834_init();	
-	ad9834_configure(1000.0, 0, 0, 0);	
 			
     while(true)
     {   
-		float frequency, start_frequency, end_frequency, vout;
-		uint32_t delay;
+		enum ad9834_waveform waveform;
+		float frequency, vout; // start_frequency, end_frequency, 
+		//uint32_t delay;
 		     			
 		// Read command from PC
 		Byte cmd = usb_data_read_byte();		 				
@@ -48,25 +48,25 @@ int main(void)
 		{
 			case CMD_FREQ:	
 				frequency = usb_data_read_float();
-				ad9834_configure(frequency, 0, 0, 0);
+				ad9834_set_frequency(frequency);
 				break;
 			case CMD_VOUT:
 				vout = usb_data_read_float();												
 				ad9834_set_output_voltage(vout);
 				break;
-			/*	Not implemented yet
-			case CMD_FREQ_REG:
-				// ad9834_set_frequency_register(usb_data_read_byte())
+			case CMD_WAVEFORM:				
+				waveform = (enum ad9834_waveform)usb_data_read_byte();
+				ad9834_set_waveform(waveform);
+				break;				
+			case CMD_FREQ_REG:				
+				ad9834_set_frequency_register(usb_data_read_byte());
 				break;
+			/*	Not implemented yet			
 			case CMD_PHASE:
 				// ad9834_set_phase()
 				break;
 			case CMD_PHASE_REG:
 				// ad9834_set_phase_register(usb_data_read_byte())
-				break;
-			case CMD_WAVEFORM:
-				// See ad9834_waveform enum				
-				// ad9834_set_waveform(usb_data_read_byte());
 				break;
 			case CMD_SWEEP:
 				start_frequency = usb_data_read_float();

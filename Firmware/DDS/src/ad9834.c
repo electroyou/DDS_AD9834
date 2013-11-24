@@ -5,6 +5,10 @@ struct spi_device spi_device_conf = {
 	.id = CONF_AD9834_SS_PIN, // 0
 };
 
+float _frequency = 1000.0;
+enum ad9834_waveform _waveform = AD9834_SINE;
+uint8_t _selectReg = 0;
+
 // Send a 16bit word to DDS and use fsync
 void ad9834_write_register(uint16_t data)
 {
@@ -56,6 +60,11 @@ void ad9834_configure(float frequency, uint8_t selectReg, Bool triangMode, Bool 
 	ad9834_write_register(MS_reg);		// send the MS word last,  to the ad9833
 }
 
+void ad9834_update(void)
+{
+	ad9834_configure(_frequency, _selectReg, _waveform == AD9834_TRIANGLE, _waveform == AD9834_SQUARE);
+}
+
 // FS ADJUST = Full-Scale Adjust Control
 // Adjust output voltage from 0 to MAX_VOUT
 void ad9834_set_output_voltage(float vout)
@@ -66,6 +75,24 @@ void ad9834_set_output_voltage(float vout)
 	uint16_t dac_value = 4095 - (4095 * vout / CONF_AD9834_MAX_VOUT);	
 	dac_wait_for_channel_ready(&CONF_AD9834_DAC, CONF_AD9834_DAC_CHANNEL);
 	dac_set_channel_value(&CONF_AD9834_DAC, CONF_AD9834_DAC_CHANNEL, dac_value);
+}
+
+void ad9834_set_waveform(enum ad9834_waveform waveform)
+{
+	_waveform = waveform;
+	ad9834_update();
+}
+
+void ad9834_set_frequency(uint16_t frequency)
+{
+	_frequency = frequency;
+	ad9834_update();
+}
+
+void ad9834_set_frequency_register(uint8_t selectReg)
+{
+	_selectReg = selectReg;
+	ad9834_update();
 }
 
 void dac_init(void)
@@ -113,4 +140,6 @@ void ad9834_init(void)
 {
 	spi_init();
 	dac_init();
+	// 1KHz, SineWave, Reg. 0
+	ad9834_update();
 }
