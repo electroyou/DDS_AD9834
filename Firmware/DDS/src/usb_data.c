@@ -2,6 +2,7 @@
 #include "usb_data.h"
 
 float usb_data_read_float(void){
+	// BUG: AVR IEEE
 	Byte data[4];
 	data[0] = usb_data_read_byte();
 	data[1] = usb_data_read_byte();

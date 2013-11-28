@@ -2,7 +2,7 @@
 #ifndef CONF_AD9834_H_
 #define CONF_AD9834_H_
 
-#define CONF_AD9834_MCLK					75	// AD9834 frequency in MHz
+#define CONF_AD9834_MCLK					75.0f	// AD9834 frequency in MHz
 
 // SPI pinout XMega A4U
 // x = PORTC or PORTD (SPIC or SPID)
@@ -17,9 +17,9 @@
 #define CONF_AD9834_MISO_PIN				IOPORT_CREATE_PIN(PORTC,6)
 #define CONF_AD9834_SCK_PIN					IOPORT_CREATE_PIN(PORTC,7)
 
-#define CONF_AD9834_SS_PIN					IOPORT_CREATE_PIN(PORTC,4)	// Slave-select
+//#define CONF_AD9834_SS_PIN					IOPORT_CREATE_PIN(PORTC,4)	// Slave-select
 #define CONF_AD9834_FSYN_PIN				IOPORT_CREATE_PIN(PORTC,1)	// Frame synchronization signal
-
+//#define CONF_AD9834_RESET_PIN				IOPORT_CREATE_PIN(PORTC,2)
 
 // PROBLEM! On Dev-Board (http://www.embeddedwirelesssolutions.com/schematics/ews_atxmega32a4u_breakout_board.png) 
 // PB1, PB2, PB3 are tied to led :(
