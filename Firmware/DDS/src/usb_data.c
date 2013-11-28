@@ -2,7 +2,7 @@
 #include "usb_data.h"
 
 float usb_data_read_float(void){
-	// BUG: AVR IEEE
+	// BUG: AVR IEEE != IEEE 754
 	Byte data[4];
 	data[0] = usb_data_read_byte();
 	data[1] = usb_data_read_byte();
@@ -11,7 +11,7 @@ float usb_data_read_float(void){
 	return *((float*)data);
 }
 uint32_t usb_data_read_uint32(void){	
-	// TODO: Test
+	// TODO: To Test
 	return usb_data_read_uint16() | (usb_data_read_uint16() << 16);
 }
 uint16_t usb_data_read_uint16(void){

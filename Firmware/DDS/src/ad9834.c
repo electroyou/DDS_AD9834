@@ -2,7 +2,7 @@
 #include "ad9834.h"
 
 struct spi_device spi_device_conf = {
-	.id = CONF_AD9834_FSYN_PIN // 0
+	.id = CONF_AD9834_FSYN_PIN
 };
 
 float _frequency = 1000.0;
@@ -48,8 +48,7 @@ void ad9834_update(void)
 	ad9834_configure(_frequency, _selectReg, _waveform == AD9834_TRIANGLE, _waveform == AD9834_SQUARE);
 }
 
-// FS ADJUST = Full-Scale Adjust Control
-// Adjust output voltage from 0 to MAX_VOUT
+// Adjust output voltage from 0 to CONF_AD9834_MAX_VOUT
 void ad9834_set_output_voltage(float vout)
 {
 	// Check if required vout is in admissible range
