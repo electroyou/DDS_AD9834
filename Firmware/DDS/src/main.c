@@ -7,7 +7,7 @@
 // Not definitives code, rely only on #define name, not value
 
 // MCU Commands received from PC
-#define CMD_FREQ		0
+#define CMD_FREQ		9
 #define CMD_FREQ_REG	1
 //#define CMD_PHASE		2
 //#define CMD_PHASE_REG	3
@@ -27,7 +27,7 @@ int main(void)
 	sysclk_init();			
 	irq_initialize_vectors();
 	cpu_irq_enable();	
-	stdio_usb_init();
+	stdio_usb_init();	
 			
 	delay_ms(200);
 	
@@ -35,7 +35,7 @@ int main(void)
 	ioport_set_pin_level(GPIO_LED_GREEN, IOPORT_PIN_LEVEL_HIGH);		
 	
 	ad9834_init();	
-			
+	
     while(true)
     {   
 		enum ad9834_waveform waveform;
@@ -43,7 +43,7 @@ int main(void)
 		//uint32_t delay;
 		     			
 		// Read command from PC
-		Byte cmd = usb_data_read_byte();		 				
+		Byte cmd = usb_data_read_byte(); 				
 		switch (cmd)
 		{
 			case CMD_FREQ:	

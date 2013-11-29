@@ -4,6 +4,7 @@
 
 #include <asf.h>
 #include "conf_ad9834.h"
+#include <math.h>
 
 enum ad9834_waveform {
 	AD9834_SINE = 0,
@@ -19,7 +20,7 @@ enum ad9834_waveform {
 // Public API
 void ad9834_init(void);
 void ad9834_set_output_voltage(float vout);
-void ad9834_set_frequency(uint16_t frequency);
+void ad9834_set_frequency(float frequency);
 void ad9834_set_frequency_register(uint8_t selectReg);
 void ad9834_set_waveform(enum ad9834_waveform waveform);
 //void ad9834_set_phase(uint16_t frequency);

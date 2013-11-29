@@ -46,7 +46,7 @@
 
 #include "compiler.h"
 
-#warning change VID/PID (now ATMEL_CDC_ASF_EXAMPLE)
+// #warning change VID/PID (now ATMEL_CDC_ASF_EXAMPLE)
 
 /**
  * USB Device Configuration
@@ -115,11 +115,14 @@
 //! Number of communication port used (1 to 3)
 #define  UDI_CDC_PORT_NB 1
 
+extern bool stdio_usb_enable(void);
+extern void stdio_usb_disable(void);
+
 //! Interface callback definition
 #define  UDI_CDC_ENABLE_EXT(port)			stdio_usb_enable()
 #define  UDI_CDC_DISABLE_EXT(port)			stdio_usb_disable()
 #define  UDI_CDC_RX_NOTIFY(port)
-#define  UDI_CDC_TX_EMPTY_NOTIFY(port)
+//#define  UDI_CDC_TX_EMPTY_NOTIFY(port)
 #define  UDI_CDC_SET_CODING_EXT(port,cfg)
 #define  UDI_CDC_SET_DTR_EXT(port,set)
 #define  UDI_CDC_SET_RTS_EXT(port,set)
@@ -142,10 +145,10 @@
 
 //! Define it when the transfer CDC Device to Host is a low rate (<512000 bauds)
 //! to reduce CDC buffers size
-#define  UDI_CDC_LOW_RATE
+//#define  UDI_CDC_LOW_RATE
 
 //! Default configuration of communication port
-#define  UDI_CDC_DEFAULT_RATE             115200	// Not definitive data rate, maybe improvements
+#define  UDI_CDC_DEFAULT_RATE             57600		// Not definitive data rate, maybe improvements
 #define  UDI_CDC_DEFAULT_STOPBITS         CDC_STOP_BITS_1
 #define  UDI_CDC_DEFAULT_PARITY           CDC_PAR_NONE
 #define  UDI_CDC_DEFAULT_DATABITS         8

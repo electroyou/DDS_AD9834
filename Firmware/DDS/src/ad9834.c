@@ -27,7 +27,7 @@ void ad9834_write_register(uint16_t data)
 void ad9834_configure(float frequency, uint8_t selectReg, Bool triangMode, Bool squareMode)
 {				
 	// 2^28 = 268435456, do frequency hop
-	uint32_t freq_reg = (frequency * 268.435456f) / CONF_AD9834_MCLK; // frequency * 3.579139413f;	
+	uint32_t freq_reg = round((frequency * 268.435456f) / CONF_AD9834_MCLK); // frequency * 3.579139413f;	
 	
 	// Make 2 x 14 bit frequency words (discard 4 LSB bit) 
 	uint16_t MS_reg = ((freq_reg >> 14) & 0x3FFF) | AD9834_BIT_FREQ0;
@@ -65,7 +65,7 @@ void ad9834_set_waveform(enum ad9834_waveform waveform)
 	ad9834_update();
 }
 
-void ad9834_set_frequency(uint16_t frequency)
+void ad9834_set_frequency(float frequency)
 {
 	_frequency = frequency;
 	ad9834_update();
@@ -92,14 +92,6 @@ void dac_init(void)
 
 void spi_init(void)
 {		
-	// Set the pin used for slave select as output high
-	//ioport_configure_pin(CONF_AD9834_SS_PIN, IOPORT_INIT_HIGH | IOPORT_DIR_OUTPUT);
-	
-	// Enable pull-up on own chip select (SS), If this pin is pulled low the SPI module will go into slave mode
-	// If the SS pin is not used and is configured as input, it must be held high to ensure master operation.
-	// If the SS pin is set as input and is being driven low, the SPI module will interpret this as another master trying to take control of the bus
-	//ioport_configure_pin(CONF_AD9834_SS_PIN, IOPORT_PULL_UP | IOPORT_DIR_INPUT);
-	
 	// Set MOSI and SCL as output high, and set MISO as input
 	ioport_configure_pin(CONF_AD9834_MOSI_PIN, IOPORT_INIT_HIGH | IOPORT_DIR_OUTPUT);
 	ioport_configure_pin(CONF_AD9834_MISO_PIN, IOPORT_DIR_INPUT);
