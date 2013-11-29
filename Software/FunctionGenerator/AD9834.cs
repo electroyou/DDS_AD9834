@@ -1,8 +1,10 @@
 ﻿// Author: Leonardo
 using System;
+using System.Linq;
 using System.Threading;
 using System.IO.Ports;
 using System.Windows;
+using System.Diagnostics.Contracts;
 
 namespace FunctionGenerator
 {
@@ -18,7 +20,7 @@ namespace FunctionGenerator
     volatile bool _isExecutingCmd = false;
 
     // MCU Commands
-    const byte CMD_FREQ = 0;
+    const byte CMD_FREQ = 9;
     const byte CMD_FREQ_REG = 1;
     const byte CMD_PHASE = 2;
     const byte CMD_PHASE_REG = 3;
@@ -31,14 +33,19 @@ namespace FunctionGenerator
     const byte MSG_DONE = 100;    
 
     public void Connect()
-    {      
-      _serial = new SerialPort("COM17", 115200, Parity.None, 8, StopBits.One);
+    {
+      //Contract.Assume(!_serial.IsOpen, "Connection is already opened");
+      string serialPortname = SerialPort.GetPortNames().First(); // "COM16"
+      _serial = new SerialPort("COM17", 57600, Parity.None, 8, StopBits.One);
       _serial.Open();      
     }
     public void Disconnect()
     {      
       WaitExecutingCmd();
-      _serial.Close();      
+      if (_serial.IsOpen)
+      {
+        _serial.Close();
+      }
     }
     void WaitExecutingCmd()
     {
@@ -46,6 +53,8 @@ namespace FunctionGenerator
     }
     public void SetFrequency(float frequency)
     {
+      Contract.Requires<ArgumentOutOfRangeException>(frequency > 0, "Frequency should be positive");
+
       _isExecutingCmd = true;
       _serial.WriteByte(CMD_FREQ);
       _serial.WriteFloat(frequency);
@@ -63,10 +72,6 @@ namespace FunctionGenerator
       _isExecutingCmd = true;
       _serial.WriteByte(CMD_VOUT);
       _serial.WriteFloat(vout);
-
-      string s;
-      s= _serial.ReadLine();
-      MessageBox.Show(s);
       _isExecutingCmd = false;
     }
     public void SetWaveform(WaveForm waveform)
