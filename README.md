@@ -22,6 +22,10 @@ Simulation:
 
 http://www.ti.com/tool/tina-ti
 
+Schematic:
+
+- FIDOCAD
+
 External documentation:
 
 Atmel ASF and Atmel Studio
